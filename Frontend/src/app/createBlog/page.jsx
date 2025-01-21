@@ -23,7 +23,7 @@ const CreateBlog = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/create-new-blog-post",
+        `${process.env.BACKEND_URL}/api/create-new-blog-post`,
         {
           title,
           content,

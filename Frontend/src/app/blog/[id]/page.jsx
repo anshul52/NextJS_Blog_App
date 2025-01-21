@@ -8,7 +8,7 @@ export default async function BlogDetailsPage({ params }) {
   let error = null;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/blog/${id}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/blog/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch post: ${res.statusText}`);
     }
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }) {
   const { id } = params;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/blog/${id}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/api/blog/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch metadata: ${res.statusText}`);
     }

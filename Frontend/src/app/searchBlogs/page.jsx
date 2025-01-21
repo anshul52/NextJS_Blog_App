@@ -20,7 +20,7 @@ export default function SearchPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/search?query=${query}`
+        `${process.env.BACKEND_URL}/api/search?query=${query}`
       );
       if (!res.ok) throw new Error("Failed to fetch search results.");
 

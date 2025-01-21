@@ -4,7 +4,7 @@ import PaginationControls from "@/components/Home/PaginationControls";
 import Link from "next/link";
 
 async function fetchPosts() {
-  const res = await fetch("http://localhost:5000/api/allPost");
+  const res = await fetch(`${process.env.BACKEND_URL}/api/allPost`);
   if (!res.ok) throw new Error("Failed to fetch posts");
   return res.json();
 }
@@ -15,6 +15,7 @@ const Blogs = () => {
   const [postsPerPage] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setmessage] = useState("");
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -23,6 +24,11 @@ const Blogs = () => {
 
       try {
         const allPosts = await fetchPosts();
+        if (allPosts.message) {
+          setmessage(allPosts.message);
+          setLoading(false);
+          return;
+        }
         setPosts(allPosts);
       } catch (err) {
         setError("Failed to load posts.");
@@ -68,21 +74,21 @@ const Blogs = () => {
         <ul className="space-y-6">
           {currentPosts.map((post) => (
             <li
-              key={post.id}
+              key={post?.id}
               className="p-6 bg-white shadow rounded hover:shadow-lg transition"
             >
-              <Link href={`/blog/${post.id}`}>
+              <Link href={`/blog/${post?.id}`}>
                 <h2 className="text-2xl font-semibold text-blue-600 hover:underline">
-                  {post.title}
+                  {post?.title}
                 </h2>
               </Link>
               <p className="text-gray-500 text-sm mt-2">
-                By {post.author} on{" "}
-                {new Date(post.createdAt).toLocaleDateString()}
+                By {post?.author} on{" "}
+                {new Date(post?.createdAt).toLocaleDateString()}
               </p>
-              <p className="mt-4 text-gray-700 line-clamp-2">{post.content}</p>
+              <p className="mt-4 text-gray-700 line-clamp-2">{post?.content}</p>
               <Link
-                href={`/blog/${post.id}`}
+                href={`/blog/${post?.id}`}
                 className="inline-block mt-4 text-blue-500 hover:underline"
               >
                 Read more &rarr;
