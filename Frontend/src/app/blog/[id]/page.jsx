@@ -10,12 +10,12 @@ export default async function BlogDetailsPage({ params }) {
   try {
     const res = await fetch(`http://localhost:5000/api/blog/${id}`);
     if (!res.ok) {
-      error = "Post not found or failed to load";
-    } else {
-      post = await res.json();
+      throw new Error(`Failed to fetch post: ${res.statusText}`);
     }
+    post = await res.json();
   } catch (err) {
-    error = "Failed to fetch post data";
+    error =
+      err.message || "An unexpected error occurred while fetching the post.";
   }
 
   if (error) {
@@ -23,7 +23,15 @@ export default async function BlogDetailsPage({ params }) {
       <div className="min-h-screen bg-gray-50 pb-8">
         <Nav />
         <div className="max-w-4xl mx-auto px-4 bg-white shadow rounded p-6">
-          <div className="text-center text-red-500">{error}</div>
+          <div className="text-center text-red-500">
+            {error} Please try again later.
+          </div>
+          <Link
+            className="mt-6 inline-block text-blue-500 hover:underline"
+            href="/"
+          >
+            &larr; Back to all posts
+          </Link>
         </div>
       </div>
     );
@@ -41,7 +49,7 @@ export default async function BlogDetailsPage({ params }) {
 
         <Link
           className="mt-6 inline-block text-blue-500 hover:underline"
-          href="/posts"
+          href="/"
         >
           &larr; Back to all posts
         </Link>
@@ -53,11 +61,24 @@ export default async function BlogDetailsPage({ params }) {
 export async function generateMetadata({ params }) {
   const { id } = params;
 
-  const res = await fetch(`http://localhost:5000/api/blog/${id}`);
-  const post = await res.json();
+  try {
+    const res = await fetch(`http://localhost:5000/api/blog/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch metadata: ${res.statusText}`);
+    }
+    const post = await res.json();
 
-  return {
-    title: post.title,
-    description: post.content.slice(0, 150),
-  };
+    return {
+      title: post.title || "Blog Post",
+      description: post.content
+        ? post.content.slice(0, 150)
+        : "No description available",
+    };
+  } catch (err) {
+    console.error("Error fetching metadata:", err.message);
+    return {
+      title: "Post not found",
+      description: "Unable to fetch metadata for this blog post.",
+    };
+  }
 }

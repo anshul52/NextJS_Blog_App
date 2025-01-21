@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Nav from "@/components/Nav";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -10,14 +10,7 @@ const CreateBlog = () => {
   const [author, setAuthor] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isMounted, setIsMounted] = useState(false); // State to track if mounted
-  const [router, setRouter] = useState(null); // State to store the router
-
-  // Set the router once the component is mounted
-  useEffect(() => {
-    setIsMounted(true);
-    setRouter(useRouter());
-  }, []);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +30,10 @@ const CreateBlog = () => {
           author,
         }
       );
-      // Only push to router if component is mounted and router is available
+      console.log("resposne --- ", response);
+
       if (router) {
-        router.push(`/posts/${response.data.id}`);
+        router.push(`/blog/${response.data.post.id}`);
       }
     } catch (err) {
       setError("Error creating post. Please try again.");
@@ -47,11 +41,6 @@ const CreateBlog = () => {
       setLoading(false);
     }
   };
-
-  // Ensure that the component is mounted before rendering
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className="bg-gray-50 min-h-screen w-full">
