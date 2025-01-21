@@ -62,16 +62,7 @@ Ensure the following are set up before testing:
       ```bash
       npm install
       ```
-   4. Update the backend API URL:
-      - Open `next.config.js` in the `frontend` directory and set the correct backend API URL (if different from default):
-        ```javascript
-        module.exports = {
-          env: {
-            BACKEND_API_URL: "http://localhost:5000",
-          },
-        };
-        ```
-   5. Start the frontend development server:
+   4. Start the frontend development server:
       ```bash
       npm run dev
       ```
