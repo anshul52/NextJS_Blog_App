@@ -12,6 +12,7 @@ const Nav = () => {
           </Link>
           <Link href={"/createBlog"}>Create Blog</Link>
           <Link href={"/aboutus"}> About Us</Link>
+          <Link href={"/searchBlogs"}>Search Blogs</Link>
         </div>
         <div className="font-bold text-2xl sm:mr-24 flex items-center gap-4">
           <Link href={"/"} className="text-white no-underline">

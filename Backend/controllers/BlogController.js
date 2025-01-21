@@ -1,5 +1,5 @@
 const { BlogPost } = require("./../config/db");
-
+const { Op } = require("sequelize");
 // Get all blog posts
 const AllPost = async (req, res) => {
   try {
@@ -84,8 +84,50 @@ const BlogById = async (req, res) => {
   }
 };
 
+const searchBlogPosts = async (req, res) => {
+  const { query } = req.query; // Extract the search query from the request
+  console.log("query---", query);
+
+  if (!query || query.trim() === "") {
+    return res.status(400).json({ error: "Search query is required" });
+  }
+
+  try {
+    // Perform the search in title or content (case-insensitive search using Op.iLike)
+    const posts = await BlogPost.findAll({
+      where: {
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: `%${query.toLowerCase()}%`, // Case-insensitive search
+            },
+          },
+          {
+            content: {
+              [Op.like]: `%${query.toLowerCase()}%`, // Case-insensitive search
+            },
+          },
+        ],
+      },
+      // Optionally, ensure the query string is lowercase for comparison
+      raw: true, // Use raw to get plain JSON response (without Sequelize instance overhead)
+    });
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No blog posts found" });
+    }
+
+    // Respond with the found blog posts
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch search results" });
+  }
+};
+
 module.exports = {
   AllPost,
   CreateNewBlogPost,
   BlogById,
+  searchBlogPosts,
 };
