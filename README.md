@@ -36,13 +36,9 @@ Ensure the following are set up before testing:
         DB_USER=<your_username>
         DB_PASSWORD=<your_password>
         DB_HOST=localhost
-        DB_PORT=3306
+        PORT=5000
         ```
-   5. Run database migrations to set up the tables:
-      ```bash
-      npx sequelize db:migrate
-      ```
-   6. Start the backend server:
+   5. Start the backend server:
       ```bash
       npm run dev
       ```
