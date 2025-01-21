@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { GrCart } from "react-icons/gr";
-import { MdOutlineCancel } from "react-icons/md";
-import { RiMenu3Fill } from "react-icons/ri";
+"use client";
+import React from "react";
 import Link from "next/link";
 
 const Nav = () => {
@@ -12,20 +10,17 @@ const Nav = () => {
           <Link href={"/"} className="no-underline">
             Home
           </Link>
-          <Link href={"/cart"}>Cart</Link>
+          <Link href={"/createBlog"}>Create Blog</Link>
+          <Link href={"/aboutus"}> About Us</Link>
         </div>
         <div className="font-bold text-2xl sm:mr-24 flex items-center gap-4">
           <Link href={"/"} className="text-white no-underline">
-            <span className="text-orange-500">My </span>
-            Blogs
+            <span className="text-orange-500">B</span>
+            loggy
           </Link>
         </div>
-        <div className="flex gap-4 items-center ">
-          <div className="sm:scale-125">
-            <Link href="/cart" className=" no-underline">
-              <GrCart />
-            </Link>
-          </div>
+        <div className="flex gap-4 items-center">
+          <div className="sm:scale-125"> </div>
         </div>
       </nav>
 

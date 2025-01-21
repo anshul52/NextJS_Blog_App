@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-// const logger = require("morgan");
+const logger = require("morgan");
 const cors = require("cors");
-const { sequelize, BlogPost, Comment } = require("./config/db.js");
+const { sequelize } = require("./config/db.js");
 const router = require("./routes/index.js");
 const app = express();
 app.use(cors());
@@ -14,7 +14,7 @@ sequelize
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(router);
 
 app.listen(PORT, async () => {
